@@ -68,13 +68,13 @@ graphe init_graphe(int n){//créé un graphe dont tous les sommets sont isolés
 void libere_graphe(graphe G){
 	for(int i=0; i<G.nombre_sommet; i++)
 	{
-		free(G.matrice_adjacence[i];
+		free(G.matrice_adjacence[i]);
 	}
 	free(G.matrice_adjacence);
 }
 
 graphe cycle_graphe(int n){//créé un cycle
-	int i;
+	int j;
 	graphe G=init_graphe(n);
 	for(int i=0; i<n; i++){
 		j = i+1;
@@ -88,12 +88,27 @@ graphe cycle_graphe(int n){//créé un cycle
 
 graphe complet_graphe(int n){//créé un graphe complet
 	graphe G=init_graphe(n);
+	int i, j;
+	for(i=0; i<G.nombre_sommet; i++){
+		for(j=0; j<G.nombre_sommet; j++){
+			G.matrice_adjacence[i][j] = (i == j) ? 0:1;
+		}
+	}
 	return G;
 }
 
 
 graphe alea_graphe(int n, float p){
 	graphe G=init_graphe(n);
+	for(int i=0; i<n-1; i++)
+	{
+		for(int j=i+1; j<n; j++)
+		{
+			if(rand()%100 < p*100)
+			G.matrice_adjacence[i][j] == 1;
+			G.matrice_adjacence[j][i] == 1;
+		}
+	}
 	return G;
 }
 
@@ -103,12 +118,14 @@ graphe graphe_arbre(int *pere, int n){//créer un arbre couvrant à partir du ta
 }
 
 void parcours_sommet(graphe G, int s, int *couleur, int *pere){
+	
 }
 
 graphe parcours_graphe(graphe G){
 	int *couleur = calloc(G.nombre_sommet,sizeof(int)); // 0 est blanc, 1 gris et 2 noir
 	int *pere = malloc(sizeof(int)*G.nombre_sommet);
 	graphe res = graphe_arbre(pere,G.nombre_sommet);
+	parcours_sommet(G, 0, couleur, pere);
 	free(couleur);
 	free(pere);
 	return res;
